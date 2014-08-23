@@ -1,4 +1,4 @@
-run_analysis.R
+README.md
 ==============
 
 Project work for cleaning data Coursera
