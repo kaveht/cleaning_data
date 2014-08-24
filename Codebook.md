@@ -94,8 +94,8 @@ Also, set the working directory above the *UCI HAR Dataset* folder - this is the
 ---
 #### Transformation Steps:
 
-<ol> 1. Change working directory to where activity labels and features files are located
-<ol> 2.  Read activity, features and variable names for sensor files
+<ol>1. Change working directory to where activity labels and features files are located
+2.  Read activity, features and variable names for sensor files
 3.  Change text case for **activity** to lowercase
 4.  Change directory to **train** subdirectory
 5.  Read ``` X_train, subject_train and y_train ``` files
