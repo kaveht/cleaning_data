@@ -50,14 +50,24 @@ data$activity <- mapvalues(data$activity, from = as.character(1:6), to = activit
 # remove working files
 rm(list = "activity", "features", "coln")
 # create data2 which only has variables that are "mean" or "standard deviation" 
-data2 <- data[, c(grep(pattern = "mean()|std()", x = names(data), value = FALSE), 562:564)]
+data2 <- data[, c(grep(pattern = "mean\\()|std\\()", x = names(data), value = FALSE), 562:564)]
 # cleanup column names to remove "()" and dash marks - in lieu of "()" use underscore "_"
-colnames(data2) <- gsub("_$", "", gsub("\\)", "", (gsub("\\(", "_", tolower(gsub("-", "", colnames(data2)))))))
-# create long data formate so each line has information on subject, activity and whether it is train or test
+#
+coln    <- colnames(data2)
+coln    <- gsub("-", "", coln)                      # Remove "-" sign from colum name
+coln    <- gsub("\\()", "_", coln)                  # Replace "()" with underscore "_"
+coln    <- gsub("_$", "", coln)                     # Remove if underscore is last character
+coln_1  <- coln[1:(length(coln) - 3)]               # Separate sensor variable names from Subject, activity
+coln_2  <- coln[(length(coln) - 2):length(coln)]     # Subject, Activity, train and test variable names
+coln_1  <- gsub("^", "mean_", coln_1)               # Place "mean_" at the beginning of each variable
+coln_1  <- gsub("(Body)\\1+", "\\1", coln_1)        # Remove string "Body" if it is contiguous duplicate
+colnames(data2) <- tolower(c(coln_1, coln_2))       # Join variable names, place as col names, make lowercase
+#
+# create long data format so each line has information on subject, activity and whether it is train or test
 # each row will have the corresponding mean or standard deviation of a variable
-data2.melt <- melt(data = data2, id.vars = c("subject", "activity", "train_test"), measure.vars = names(data2)[1:79])
+data2.melt <- melt(data = data2, id.vars = c("subject", "activity", "train_test"), measure.vars = names(data2)[1:(dim(data2)[2] - 3)])
 # remove working files
-rm(list = "data", "data2")
+rm(list = "data", "data2", "coln", "coln_1", "coln_2")
 # take the mean of the variables based on subject, activity and whether it is a train or test
 # train and test are mutually exclusive - subjects who did the train did not test and vice versa 
 ans <- dcast(data = data2.melt, formula = subject + activity + train_test ~ variable, fun.aggregate = mean)
