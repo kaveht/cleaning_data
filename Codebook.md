@@ -89,8 +89,12 @@ The following is a list of variables contained in *mean_activitybysubject.txt* f
 #### Special Note:
 The following libraries were used to transform the data:    
 * plyr   
-* reshape2    
+* reshape2
+ 
+Additional Note:
+
 Also, set the working directory above the *UCI HAR Dataset* folder - this is the folder when the default folder is selected when the file is unzipped.    
+
 ---
 #### Transformation Steps:
 
