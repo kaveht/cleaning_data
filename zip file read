@@ -1,0 +1,28 @@
+download.file(url="http://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip", destfile="power_consumption.zip")
+unzip("power_consumption.zip")
+powerconsumption <- read.table("household_power_consumption.txt",sep = ";")
+
+# get only data points from 1 or 2 Feb 2007
+varnames <- powerconsumption[1,]
+powerfeb07<-powerconsumption[grep("^[12]/2/2007",powerconsumption$V1),]
+rm(powerconsumption)
+__________
+
+library(lubridate)
+
+## Load data
+
+download.file(url="http://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip", destfile="power_consumption.zip")
+unzip("power_consumption.zip")
+powerconsumption <- read.table("household_power_consumption.txt",sep = ";")
+
+# get only data points from 1 or 2 Feb 2007
+varnames <- powerconsumption[1,]
+powerfeb07<-powerconsumption[grep("^[12]/2/2007",powerconsumption$V1),]
+rm(powerconsumption)
+
+## Plot
+globalactivepower <- as.numeric(as.character(powerfeb07[,3]))
+
+dateTime <- paste(powerfeb07[,1],powerfeb07[,2])
+dateTime<-dmy_hms(dateTime)
